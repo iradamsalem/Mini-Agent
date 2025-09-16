@@ -1,22 +1,33 @@
+// backend/src/services/llm/google.js
 import { GoogleGenerativeAI } from '@google/generative-ai';
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
 
-export async function classifyTool(query) {
-  const prompt = `
-You are a tool selector. For the user query, choose one of: "rag", "db", or "direct".
-If db, also provide JSON tool_args, e.g. {"userId":123}.
-Respond ONLY in JSON: {"tool":"rag|db|direct","tool_args":{}}.
-
-Query: ${query}
-`;
-  const out = await model.generateContent(prompt);
-  const text = out.response.text();
-  try { return JSON.parse(text); } catch { return { tool: 'direct', tool_args: {} }; }
-}
+const genAI = new GoogleGenerativeAI((process.env.GOOGLE_API_KEY ?? '').trim());
 
 export async function llmAnswer(query) {
-  const prompt = `Answer clearly and briefly:\n${query}`;
-  const out = await model.generateContent(prompt);
+  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
+  const out = await model.generateContent(query);
   return out.response.text();
+}
+
+export async function classifyTool(question) {
+  const system = `
+Return ONLY a compact JSON object like:
+{"tool":"rag"} or {"tool":"db","tool_args":{"userId":123}} or {"tool":"direct"}.
+
+Rules:
+- Use "db" for balance/user id queries (e.g., "balance of user 123").
+- Use "rag" for policy/docs/faq/shipping/privacy/terms/product info questions.
+- Otherwise use "direct".
+`;
+
+  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  try {
+    const r = await model.generateContent(system + '\n\n' + question);
+    return JSON.parse(r.response.text());
+  } catch {
+    // fallback היוריסטי
+    if (/balance|user\s*\d+/i.test(question)) return { tool: 'db', tool_args: {} };
+    if (/policy|refund|shipping|privacy|terms|faq|product/i.test(question)) return { tool: 'rag' };
+    return { tool: 'direct' };
+  }
 }

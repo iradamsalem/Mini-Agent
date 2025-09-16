@@ -1,9 +1,12 @@
 import { agentService } from '../services/agent.service.js';
 
-export const askController = async (req, res, next) => {
+export async function askController(req, res, next) {
   try {
-    const { query } = req.validated;
+    const { query } = req.validated ?? req.body ?? {};
+    if (!query) return res.status(400).json({ error: 'Missing "query"' });
     const result = await agentService.handleQuery(query);
-    res.json(result); // { tool, answer, sources? }
-  } catch (err) { next(err); }
-};
+    res.json(result);
+  } catch (e) {
+    next(e);
+  }
+}
