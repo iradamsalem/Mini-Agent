@@ -1,20 +1,18 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
+  "main": "src/server.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon src/server.js",
     "start": "node src/server.js",
     "test": "jest --runInBand",
-    "db:init": "cross-env DATABASE_URL=\"postgres://user:pass@localhost:5432/mini_agent\" psql -d mini_agent -f src/db/migrations/init.sql",
+    "db:init": "psql -U postgres -d mini_agent -f src/db/migrations/init.sql",
     "db:seed": "node src/db/seed/seed.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "pg": "^8.16.3",

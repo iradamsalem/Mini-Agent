@@ -1,0 +1,5 @@
+About MiniAgent
+
+MiniAgent was founded to make small, functional demos that actually work.
+Our team believes that working prototypes are cooler than PowerPoint slides.
+Our motto: "Less slide decks, more code!"

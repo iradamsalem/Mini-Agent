@@ -1,0 +1,4 @@
+Security Policy (Because Hackers Are Everywhere)
+
+All passwords must be at least 8 characters long, contain one number, one uppercase letter, and a plot twist.
+Two-factor authentication is encouraged, but please don't use "123456" as your backup code.
