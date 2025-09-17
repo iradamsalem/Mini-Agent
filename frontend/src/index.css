@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* GPT-Style Chat UI Design System */
+
+@layer base {
+  :root {
+    /* Light Mode Colors */
+    --chat-bg: 0 0% 98%;
+    --chat-surface: 0 0% 100%;
+    --chat-surface-hover: 0 0% 96%;
+    --chat-border: 0 0% 90%;
+    
+    /* Text Colors */
+    --text-primary: 0 0% 9%;
+    --text-secondary: 0 0% 45%;
+    --text-muted: 0 0% 64%;
+    
+    /* Gradient Accents */
+    --gradient-primary: linear-gradient(135deg, hsl(190 95% 50%), hsl(280 95% 60%));
+    --gradient-subtle: linear-gradient(135deg, hsl(190 95% 50% / 0.1), hsl(280 95% 60% / 0.1));
+    --accent-cyan: 190 95% 50%;
+    --accent-purple: 280 95% 60%;
+    
+    /* Tool Badge Colors */
+    --tool-rag: 190 95% 50%;
+    --tool-db: 120 70% 45%;
+    --tool-direct: 280 95% 60%;
+    
+    /* Glass Effect */
+    --glass-bg: hsl(0 0% 100% / 0.8);
+    --glass-border: hsl(0 0% 80% / 0.2);
+    
+    /* Shadows */
+    --shadow-soft: 0 4px 20px hsl(0 0% 0% / 0.1);
+    --shadow-glow: 0 0 30px hsl(190 95% 50% / 0.15);
+    
+    /* Status Colors */
+    --status-online: 120 70% 45%;
+    --status-offline: 0 0% 50%;
+    --error: 0 85% 55%;
+    
+    /* Animation */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Standard shadcn tokens for compatibility */
+    --background: var(--chat-bg);
+    --foreground: var(--text-primary);
+    --card: var(--chat-surface);
+    --card-foreground: var(--text-primary);
+    --popover: var(--chat-surface);
+    --popover-foreground: var(--text-primary);
+    --primary: var(--accent-cyan);
+    --primary-foreground: 0 0% 98%;
+    --secondary: var(--chat-surface-hover);
+    --secondary-foreground: var(--text-primary);
+    --muted: var(--chat-border);
+    --muted-foreground: var(--text-muted);
+    --accent: var(--chat-surface-hover);
+    --accent-foreground: var(--text-primary);
+    --destructive: var(--error);
+    --destructive-foreground: 0 0% 98%;
+    --border: var(--chat-border);
+    --input: var(--chat-surface-hover);
+    --ring: var(--accent-cyan);
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    /* Dark Mode Colors */
+    --chat-bg: 210 19% 5%; /* #0B0F13 */
+    --chat-surface: 210 15% 8%;
+    --chat-surface-hover: 210 15% 12%;
+    --chat-border: 210 20% 15%;
+    
+    /* Text Colors */
+    --text-primary: 0 0% 95%;
+    --text-secondary: 0 0% 70%;
+    --text-muted: 0 0% 50%;
+    
+    /* Gradient Accents */
+    --gradient-primary: linear-gradient(135deg, hsl(190 95% 60%), hsl(280 95% 70%));
+    --gradient-subtle: linear-gradient(135deg, hsl(190 95% 60% / 0.1), hsl(280 95% 70% / 0.1));
+    --accent-cyan: 190 95% 60%;
+    --accent-purple: 280 95% 70%;
+    
+    /* Tool Badge Colors */
+    --tool-rag: 190 95% 60%;
+    --tool-db: 120 70% 50%;
+    --tool-direct: 280 95% 70%;
+    
+    /* Glass Effect */
+    --glass-bg: hsl(210 15% 8% / 0.8);
+    --glass-border: hsl(210 20% 25% / 0.2);
+    
+    /* Shadows */
+    --shadow-soft: 0 4px 20px hsl(0 0% 0% / 0.3);
+    --shadow-glow: 0 0 30px hsl(190 95% 60% / 0.2);
+    
+    /* Status Colors */
+    --status-online: 120 70% 50%;
+    --status-offline: 0 0% 50%;
+    --error: 0 85% 60%;
+    
+    /* Standard shadcn tokens for compatibility */
+    --background: var(--chat-bg);
+    --foreground: var(--text-primary);
+    --card: var(--chat-surface);
+    --card-foreground: var(--text-primary);
+    --popover: var(--chat-surface);
+    --popover-foreground: var(--text-primary);
+    --primary: var(--accent-cyan);
+    --primary-foreground: 0 0% 5%;
+    --secondary: var(--chat-surface-hover);
+    --secondary-foreground: var(--text-primary);
+    --muted: var(--chat-border);
+    --muted-foreground: var(--text-muted);
+    --accent: var(--chat-surface-hover);
+    --accent-foreground: var(--text-primary);
+    --destructive: var(--error);
+    --destructive-foreground: var(--text-primary);
+    --border: var(--chat-border);
+    --input: var(--chat-surface-hover);
+    --ring: var(--accent-cyan);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
