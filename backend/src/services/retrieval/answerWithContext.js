@@ -6,34 +6,36 @@ if (!API_KEY) throw new Error('GOOGLE_API_KEY is missing in backend/.env');
 
 const genAI = new GoogleGenerativeAI(API_KEY);
 const chatModel = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-
-const hasHebrew = (s) => /[א-ת]/.test(String(s || ''));
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 export async function answerWithContext(query, chunks) {
-  const context = chunks.map(c => `- ${c.text}`).join('\n');
-  const base =
-`You are a helpful assistant. Use ONLY the context to answer the question.
-If insufficient, say you don't know.
+  const context = (chunks || []).map((c) => `- ${c.text}`).join('\n');
+
+  const prompt = `You are a helpful assistant. Use ONLY the provided context to answer.
+If the context is insufficient, say you don't know.
+Always respond in clear English.
 
 Context:
 ${context}
 
 Question: ${query}
-`;
-  const prompt = hasHebrew(query)
-    ? base + 'Answer in Hebrew, in 2–3 short sentences.'
-    : base + 'Answer in 2–3 sentences.';
 
-  for (let i = 0; i < 2; i++) {
+Final answer (2–3 short sentences):`;
+
+  const attempts = 3;
+  for (let i = 0; i < attempts; i++) {
     try {
       const out = await chatModel.generateContent(prompt);
       return { answer: out.response.text() };
     } catch (e) {
-      if (String(e).includes('503') && i === 0) {
-        await new Promise(r => setTimeout(r, 600));
+      const isOverload = String(e).includes('503');
+      if (isOverload && i < attempts - 1) {
+        console.warn(`⚠️ Gemini 503 in answerWithContext, retry ${i + 2}/${attempts}...`);
+        await sleep(1000 * (i + 1)); // 1s, 2s
         continue;
       }
-      throw e;
+      // Friendly fallback so /api/ask doesn't fail with 500
+      return { answer: "Sorry, the model is overloaded right now. Please try again in a moment." };
     }
   }
 }

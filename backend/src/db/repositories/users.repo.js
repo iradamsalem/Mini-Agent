@@ -1,9 +1,10 @@
-import { pool } from '../pool.js';
+// src/db/repositories/users.repo.js
+import { pool } from '../pool.js'; // עדכן אם הנתיב אצלך שונה
 
-export async function getUserBalance(userId) {
+export async function getUserById(userId) {
   const { rows } = await pool.query(
-    'SELECT balance FROM users WHERE id = $1',
+    'SELECT id, name, balance FROM users WHERE id = $1 LIMIT 1',
     [userId]
   );
-  return rows[0]?.balance ?? null;
+  return rows[0] ?? null;
 }
