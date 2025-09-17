@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon src/server.js",
     "start": "node src/server.js",
-    "test": "jest --runInBand",
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand",
     "db:init": "psql -U postgres -d mini_agent -f src/db/migrations/init.sql",
     "db:seed": "node src/db/seed/seed.js"
   },
@@ -19,6 +19,7 @@
     "zod": "^4.1.8"
   },
   "devDependencies": {
+    "@jest/globals": "^30.1.2",
     "cross-env": "^10.0.0",
     "eslint": "^9.35.0",
     "jest": "^30.1.3",
