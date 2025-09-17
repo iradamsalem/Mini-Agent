@@ -1,4 +1,3 @@
-// backend/src/db/repositories/users.repo.js
 import { pool } from '../pool.js';
 
 export async function getUserBalance(userId) {
