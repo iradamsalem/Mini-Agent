@@ -1,3 +1,9 @@
-import 'dotenv/config';
+import '../config/loadEnv.js';
 import pg from 'pg';
-export const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL, ssl: false });
+
+const { Pool } = pg;
+
+export const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: false,
+});
