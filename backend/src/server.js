@@ -5,8 +5,10 @@ import dotenv from 'dotenv';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// אם ה-.env נמצא בתיקיית backend ולא ב-src:
+// טוען את קובץ .env שנמצא בתיקיית backend
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
+
 
 import app from './app.js';
 

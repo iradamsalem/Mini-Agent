@@ -4,7 +4,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 const genAI = new GoogleGenerativeAI((process.env.GOOGLE_API_KEY ?? '').trim());
 
 export async function llmAnswer(query) {
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
   const out = await model.generateContent(query);
   return out.response.text();
 }
