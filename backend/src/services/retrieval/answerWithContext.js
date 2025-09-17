@@ -4,8 +4,29 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 const IS_TEST = process.env.NODE_ENV === 'test' || process.env.TEST_MODE === '1';
 const API_KEY = (process.env.GOOGLE_API_KEY ?? '').trim();
 const GEN_MODEL = (process.env.GOOGLE_GEN_MODEL ?? 'gemini-1.5-flash').trim();
+
+/**
+ * Async sleep helper for retry backoff.
+ *
+ * @param {number} ms - Number of milliseconds to wait.
+ * @returns {Promise<void>}
+ */
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
+/**
+ * Generates an answer using Google Generative AI with the provided context.
+ *
+ * - In test mode, returns a deterministic answer using the first retrieved chunk.
+ * - Builds a prompt with all retrieved chunks as context and instructs the model
+ *   to answer strictly based on that context.
+ * - Retries up to 3 times if the model returns a 503 (overloaded).
+ *
+ * @async
+ * @param {string} query - The user's question.
+ * @param {Array<{text:string}>} chunks - Retrieved context chunks (text only).
+ * @returns {Promise<{answer:string}>} Object containing the generated answer text.
+ * @throws {Error} If GOOGLE_API_KEY is missing in the environment.
+ */
 export async function answerWithContext(query, chunks) {
   // TEST MODE: deterministic answer from retrieved context
   if (IS_TEST) {
