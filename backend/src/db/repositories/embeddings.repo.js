@@ -1,8 +1,26 @@
 import { pool } from '../pool.js';
 import { embedText } from '../../services/retrieval/embeddings.service.js';
 
+/**
+ * Converts a numeric array into a Postgres pgvector textual format.
+ * Example: [0.1, 0.2] -> "[0.1,0.2]"
+ * @param {number[]} arr - Array of embedding values (float32).
+ * @returns {string} Text representation for pgvector in Postgres.
+ */
 const toPgVector = (arr) => `[${arr.join(',')}]`;
 
+/**
+ * Searches for the most similar chunks in the database using pgvector.
+ * It embeds the query text, performs an ANN (Approximate Nearest Neighbor) search,
+ * and returns the closest document chunks along with their cosine distances.
+ *
+ * @async
+ * @param {string} query - The text query from the user.
+ * @param {number} [k=10] - Number of top results to return.
+ * @param {number} [probes=40] - Number of probes for ivfflat (controls accuracy/performance tradeoff).
+ * @returns {Promise<Array<{id:number,title:string,chunk_index:number,text:string,distance:number}>>}
+ * An array of objects representing the most similar chunks and their distance scores.
+ */
 export async function searchSimilarChunks(query, k = 10, probes = 40) {
   const qvec = await embedText(query);
   const vec = toPgVector(qvec);
