@@ -110,7 +110,7 @@ psql -d mini_agent -f backend/src/db/migrations/init.sql
 ```
 
 > **Explanation:** This step creates all necessary tables in the database.
-
+💡 Tip: You can also open init.sql in pgAdmin's Query Tool and execute it directly if you prefer using a GUI.
 ### 🌱 Seed Sample Data  
 
 After initializing the schema, run:
