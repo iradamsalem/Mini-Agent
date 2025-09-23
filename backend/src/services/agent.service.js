@@ -31,7 +31,7 @@ export const agentService = {
     const { tool, tool_args } = await classifyTool(query);
 
     if (tool === 'rag') {
-      const { answer, sources, used } = await ragTool(query, { minScore: 0.68, k: 8 });
+      const { answer, sources, used } = await ragTool(query, { minScore: 0.68, k: 3 });
       if (!answer) {
         const fallback = await llmAnswer(query);
         return { tool: 'direct', answer: fallback, note: used }; // rag:no_hit
